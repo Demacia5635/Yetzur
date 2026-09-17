@@ -310,6 +310,11 @@ public class GCodeProcessor {
                         "      Height " + offsetStr + ")"));
             }
         }
+        // Add a g92.1 at the end to clear any offsets that were set during tool changes
+        String last = output.get(output.size()-1);
+        lineNumber--;
+        output.add(str("G92.1 (reset G92 offsets)"));
+        output.add(str(last.substring(last.indexOf(" ")+1)));
 
         Files.write(Paths.get(outputPath), output);
         String msg = "Processed " + inputLines.size() + " lines -> "
